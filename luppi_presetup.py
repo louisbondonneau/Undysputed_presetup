@@ -84,7 +84,7 @@ def sendMail(subject, text, files=[]):
         for ifile in range(len(files)):
             attach_file(msg, files[ifile])
             # print(files[ifile])
-    mailserver = smtplib.SMTP('smtp.obs-nancay.fr')
+    mailserver = smtplib.SMTP('localhost')
     # mailserver.set_debuglevel(1)
     mailserver.sendmail(msg['From'], msg['To'].split(','), msg.as_string())
     mailserver.quit()
