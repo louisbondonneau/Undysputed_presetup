@@ -149,7 +149,7 @@ def TIME_TO_hhmm_MMDDYY(time_obj, offset=0):
 
 def TIME_TO_MJDS(time_obj, offset=0):
     # Convertir en objet Time si c'est un datetime
-    if isinstance(time_obj, datetime.datetime):
+    if isinstance(time_obj, datetime):
         time_obj = Time(time_obj)
 
     # Offset is given in seconds and is added to the time
