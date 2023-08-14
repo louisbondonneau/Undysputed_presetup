@@ -8,7 +8,6 @@ import os.path
 import subprocess
 from astropy import units as u
 from astropy.coordinates import SkyCoord
-from astropy.time import Time, TimeDelta
 from datetime import datetime
 from datetime import timedelta
 
@@ -134,27 +133,28 @@ TFsetup = 'sudo -E /home/cognard/bin/tf '
 
 
 def TIME_TO_hhmm_MMDDYY(time_obj, offset=0):
-    # Convertir en objet Time si c'est un datetime
-    if isinstance(time_obj, datetime):
-        time_obj = Time(time_obj)
+    # Convertir en objet datetime si c'est un Time
+    if isinstance(time_obj, Time):
+        time_obj = time_obj.datetime
 
     # Offset is given in seconds and is added to the time
     if (offset != 0):
-        time_obj += TimeDelta(offset, format='sec')
+        time_obj += timedelta(seconds=offset)
 
+    datetime_obj = time_obj.datetime
     # Use strftime to generate the desired format
-    formatted_time = time_obj.strftime('%H:%M %m/%d/%y')
+    formatted_time = datetime_obj.strftime('%H:%M %m/%d/%y')
     return formatted_time
 
 
 def TIME_TO_MJDS(time_obj, offset=0):
-    # Convertir en objet Time si c'est un datetime
-    if isinstance(time_obj, datetime):
-        time_obj = Time(time_obj)
+    # Convertir en objet datetime si c'est un Time
+    if isinstance(time_obj, Time):
+        time_obj = time_obj.datetime
 
     # Offset is given in seconds and is added to the time
     if (offset != 0):
-        time_obj += TimeDelta(offset, format='sec')
+        time_obj += timedelta(seconds=offset)
 
     day_frac = time_obj.jd % 1  # Fraction of the day
     seconds_in_day = day_frac * 86400.0  # Convert fractional day to seconds
@@ -162,19 +162,20 @@ def TIME_TO_MJDS(time_obj, offset=0):
 
 
 def TIME_TO_YYYYMMDD(time_obj):
-    # Convertir en objet Time si c'est un datetime
-    if isinstance(time_obj, datetime):
-        time_obj = Time(time_obj)
+    # Convertir en objet datetime si c'est un Time
+    if isinstance(time_obj, Time):
+        time_obj = time_obj.datetime
 
     return time_obj.strftime('20%y-%m-%dT%H:%M:%S')
 
 
 def TIME_TO_DYYYYMMDDTHHMM(time_obj):
-    # Convertir en objet Time si c'est un datetime
-    if isinstance(time_obj, datetime):
-        time_obj = Time(time_obj)
+    # Convertir en objet datetime si c'est un Time
+    if isinstance(time_obj, Time):
+        time_obj = time_obj.datetime
 
-    return "D" + time_obj.strftime('20%y%m%dT%H%M')
+    datetime_obj = time_obj.datetime
+    return "D" + datetime_obj.strftime('20%y%m%dT%H%M')
 
 # parset existence check
 def parset_exist(src_name):
