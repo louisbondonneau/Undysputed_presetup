@@ -180,8 +180,12 @@ def TIME_TO_DYYYYMMDDTHHMM(time_obj):
 
 
 def parset_exist(src_name):
-    if os.path.isfile('/ephem/' + src_name + '.par'):
+    par_path = '/ephem/' + src_name.upper() + '.par'
+    if os.path.isfile(par_path):
         return True
+    else:
+        print(par_path)
+        return False
 
 
 # initialisation des list
