@@ -157,9 +157,9 @@ def TIME_TO_MJDS(time_obj, offset=0):
     if (offset != 0):
         time_obj += TimeDelta(offset, format='sec')
 
-    day_frac = time_obj.jd % 1  # Fraction of the day
+    day_frac = time_obj.mjd % 1  # Fraction of the day
     seconds_in_day = day_frac * 86400.0  # Convert fractional day to seconds
-    return seconds_in_day
+    return int(np.round(seconds_in_day))
 
 
 def TIME_TO_YYYYMMDD(time_obj):
