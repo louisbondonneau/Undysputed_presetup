@@ -8,6 +8,7 @@ import os.path
 import subprocess
 from astropy import units as u
 from astropy.coordinates import SkyCoord
+from astropy.time import Time
 from datetime import datetime
 from datetime import timedelta
 
