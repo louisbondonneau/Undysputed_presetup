@@ -22,6 +22,7 @@ import smtplib
 # 2020/12/04 sync ephem pass from scp to rsync
 # 2020/19/05 it is no possible to use diff projid in lanes with param --projid=ES12
 # 2020/19/05 option to force undysputedbk3
+# now commit messages are on github...
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-bk1', dest='bk1', action='store_true',
@@ -190,12 +191,16 @@ def TIME_TO_DYYYYMMDDTHHMM(time_obj):
 
 
 def parset_exist(src_name):
-    par_path = '/ephem/' + src_name.upper() + '.par'
-    if os.path.isfile(par_path):
-        return True
-    else:
-        print(par_path)
-        return False
+    dir_path = '/ephem/'
+    target_filename = src_name.upper() + '.par'
+
+    # Parcourir les fichiers dans le dir
+    for filename in os.listdir(dir_path):
+        if filename.upper() == target_filename:
+            return os.path.splitext(filename)[0]
+
+    print(os.path.join(dir_path, target_filename))
+    return False
 
 
 # initialisation des list
@@ -423,16 +428,18 @@ for lane in range(nlane + 1):
             PORT[lane], RCV_IP[lane], DST_IP[lane],
             topic_tmp, BEAM, TIME_TO_MJDS(AllstartTime[BEAM][0], offset=60), TIME_TO_DYYYYMMDDTHHMM(AllstartTime[BEAM][0]), AllparametersList[BEAM][0])]
         if not re.search("--src=", AllparametersList[BEAM][0]):
-            src_name = AlltargetList[BEAM][0]
-            if not parset_exist(src_name):
+            src_name = parset_exist(AlltargetList[BEAM][0])
+            if (src_name == False):
+                src_name = AlltargetList[BEAM][0]
                 # TODO: send an error mail
                 sendMail(subject="No parfile for %s durring SINGLE %s in beam %d for %s" % (src_name, observation_name, BEAM, topic),
                          text="No parfile for %s durring SINGLE %s in beam %d for %s\n" % (src_name, observation_name, BEAM, topic),
                          files=[args.INPUT_ARCHIVE[0]])
             Allcommande[BEAM][0] = [Allcommande[BEAM][0] + " --src=%s" % (src_name)]
         else:
-            src_name = re.search(r'--src=([^ ]+)', AllparametersList[BEAM][0]).group(1)
-            if not parset_exist(src_name):
+            src_name = parset_exist(re.search(r'--src=([^ ]+)', AllparametersList[BEAM][0]).group(1))
+            if (src_name == False):
+                src_name = re.search(r'--src=([^ ]+)', AllparametersList[BEAM][0]).group(1)
                 # TODO: send an error mail
                 sendMail(subject="parfile do not exist for %s durring SINGLE %s in beam %d for %s" % (src_name, observation_name, BEAM, topic),
                          text="parfile do not exist for %s durring SINGLE %s in beam %d for %s\n" % (src_name, observation_name, BEAM, topic),
@@ -460,16 +467,17 @@ for lane in range(nlane + 1):
             PORT[lane], RCV_IP[lane], DST_IP[lane],
             topic_tmp, BEAM, TIME_TO_MJDS(AllstartTime[BEAM][0], offset=60), TIME_TO_DYYYYMMDDTHHMM(AllstartTime[BEAM][0]), AllparametersList[BEAM][0])]
         if not re.search("--src=", AllparametersList[BEAM][0]):
-            src_name = AlltargetList[BEAM][0]
-            if not parset_exist(src_name):
+            src_name = parset_exist(AlltargetList[BEAM][0])
+            if (src_name == False):
+                src_name = AlltargetList[BEAM][0]
                 sendMail(subject="No parfile for %s durring WAVE %s in beam %d for %s" % (src_name, observation_name, BEAM, topic),
                          text="No parfile for %s durring WAVE %s in beam %d for %s\n" % (src_name, observation_name, BEAM, topic),
                          files=[args.INPUT_ARCHIVE[0]])
             Allcommande[BEAM][0] = [Allcommande[BEAM][0] + " --src=%s" % (src_name)]
         else:
-            src_name = re.search(r'--src=([^ ]+)', AllparametersList[BEAM][0]).group(1)
-            if not parset_exist(src_name):
-                # TODO: send an error mail
+            src_name = parset_exist(re.search(r'--src=([^ ]+)', AllparametersList[BEAM][0]).group(1))
+            if (src_name == False):
+                src_name = re.search(r'--src=([^ ]+)', AllparametersList[BEAM][0]).group(1)
                 sendMail(subject="parfile do not exist for %s durring WAVE %s in beam %d for %s" % (src_name, observation_name, BEAM, topic),
                          text="parfile do not exist for %s durring WAVE %s in beam %d for %s\n" % (src_name, observation_name, BEAM, topic),
                          files=[args.INPUT_ARCHIVE[0]])
@@ -532,17 +540,17 @@ for lane in range(nlane + 1):
                                                                                                                                                                                                             lane], DST_IP[lane],
                                                                                                                                                                                                         topic_tmp, BEAM, TIME_TO_MJDS(AllstartTime[BEAM][0], offset=60), TIME_TO_DYYYYMMDDTHHMM(AllstartTime[BEAM][0]), AllparametersList[BEAM][0])]
         if not re.search("--src=", AllparametersList[BEAM][0]):
-            src_name = AlltargetList[BEAM][0]
-            if not parset_exist(src_name):
-                # TODO: send an error mail
+            src_name = parset_exist(AlltargetList[BEAM][0])
+            if (src_name == False):
+                src_name = AlltargetList[BEAM][0]
                 sendMail(subject="No parfile for %s durring FOLD %s in beam %d for %s" % (src_name, observation_name, BEAM, topic),
                          text="No parfile for %s durring FOLD %s in beam %d for %s\n" % (src_name, observation_name, BEAM, topic),
                          files=[args.INPUT_ARCHIVE[0]])
             Allcommande[BEAM][0] = [Allcommande[BEAM][0] + " --src=%s" % (src_name)]
         else:
-            src_name = re.search(r'--src=([^ ]+)', AllparametersList[BEAM][0]).group(1)
-            if not parset_exist(src_name):
-                # TODO: send an error mail
+            src_name = parset_exist(re.search(r'--src=([^ ]+)', AllparametersList[BEAM][0]).group(1))
+            if (src_name == False):
+                src_name = re.search(r'--src=([^ ]+)', AllparametersList[BEAM][0]).group(1)
                 sendMail(subject="parfile do not exist for %s durring FOLD %s in beam %d for %s" % (src_name, observation_name, BEAM, topic),
                          text="parfile do not exist for %s durring FOLD %s in beam %d for %s\n" % (src_name, observation_name, BEAM, topic),
                          files=[args.INPUT_ARCHIVE[0]])
