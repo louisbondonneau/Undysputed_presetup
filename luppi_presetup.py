@@ -8,7 +8,7 @@ import os.path
 import subprocess
 from astropy import units as u
 from astropy.coordinates import SkyCoord
-from astropy.time import Time
+from astropy.time import Time, TimeDelta
 from datetime import datetime
 from datetime import timedelta
 
@@ -142,20 +142,19 @@ def TIME_TO_hhmm_MMDDYY(time_obj, offset=0):
     if (offset != 0):
         time_obj += timedelta(seconds=offset)
 
-    datetime_obj = time_obj.datetime
     # Use strftime to generate the desired format
-    formatted_time = datetime_obj.strftime('%H:%M %m/%d/%y')
+    formatted_time = time_obj.strftime('%H:%M %m/%d/%y')
     return formatted_time
 
 
 def TIME_TO_MJDS(time_obj, offset=0):
-    # Convertir en objet datetime si c'est un Time
-    if isinstance(time_obj, Time):
-        time_obj = time_obj.datetime
+    # Convertir en objet Time si c'est un datetime
+    if isinstance(time_obj, datetime.datetime):
+        time_obj = Time(time_obj)
 
     # Offset is given in seconds and is added to the time
     if (offset != 0):
-        time_obj += timedelta(seconds=offset)
+        time_obj += TimeDelta(offset, format='sec')
 
     day_frac = time_obj.jd % 1  # Fraction of the day
     seconds_in_day = day_frac * 86400.0  # Convert fractional day to seconds
@@ -175,13 +174,15 @@ def TIME_TO_DYYYYMMDDTHHMM(time_obj):
     if isinstance(time_obj, Time):
         time_obj = time_obj.datetime
 
-    datetime_obj = time_obj.datetime
-    return "D" + datetime_obj.strftime('20%y%m%dT%H%M')
+    return "D" + time_obj.strftime('20%y%m%dT%H%M')
 
 # parset existence check
+
+
 def parset_exist(src_name):
     if os.path.isfile('/ephem/' + src_name + '.par'):
         return True
+
 
 # initialisation des list
 nlane = 0
@@ -387,8 +388,6 @@ for lane in range(nlane + 1):
     dirname_databf2 = observation_start.strftime("%Y%m%d_%H%M%S") + observation_stop.strftime("%Y%m%d_%H%M%S") + '_' + observation_name
     path_databf2 = '/data/nenufar-pulsar/' + topic_tmp + '/' + observation_start.strftime("%Y/%m") + '/' + dirname_databf2 + '/'
 
-
-
     # -------------------------------TF---MODE------------------------------------------
     if(AllmodeList[BEAM][0] == 'TF'):
         if (first_tf == 1):
@@ -400,9 +399,6 @@ for lane in range(nlane + 1):
             if not (test):
                 completed = subprocess.run(Allcommande[BEAM][0] + ' &', shell=True)
             print('subprocess:', Allcommande[BEAM][0])
-
-
-
 
     # -------------------------------SINGLE---MODE----------------------------------------
     elif(AllmodeList[BEAM][0] == 'SINGLE'):
@@ -438,9 +434,6 @@ for lane in range(nlane + 1):
             print('returncode:', completed)
         print('subprocess:', Allcommande[BEAM][0])
         print('subprocess:', luppi_daq_dedisp + AlltransferList[BEAM][0] + ' -g ' + str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &')
-
-
-
 
     # -------------------------------WAVEFORM---MODE----------------------------------------
     elif(AllmodeList[BEAM][0] == 'WAVE'):
@@ -479,9 +472,6 @@ for lane in range(nlane + 1):
         print('subprocess:', Allcommande[BEAM][0])
         print('subprocess:', write_raw + AlltransferList[BEAM][0] + ' -d -g ' + str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &')
 
-
-
-
     # -------------------------------WAVEFORM--OLAF--MODE----------------------------------------
     elif(AllmodeList[BEAM][0] == 'WAVEOLAF'):
         print('-----------------------WAVEFORM--OLAF--MODE---BEAM-' + str(BEAM) + '-----LANE--' + str(lane) + '-------')
@@ -515,9 +505,6 @@ for lane in range(nlane + 1):
         if not (test):
             completed = subprocess.run(Allcommande[BEAM][0] + SHELLfile + str(int(BEAM)) + '.log' + ' &', shell=True)
         print(Allcommande[BEAM][0] + SHELLfile + str(int(BEAM)) + '.log' + ' &')
-
-
-
 
     # -------------------------------FOLD---MODE----------------------------------------
     elif(AllmodeList[BEAM][0] == 'FOLD'):
