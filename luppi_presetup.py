@@ -192,7 +192,7 @@ def TIME_TO_DYYYYMMDDTHHMM(time_obj):
 
 def parset_exist(src_name):
     dir_path = '/ephem/'
-    target_filename = src_name.upper() + '.par'
+    target_filename = src_name.upper() + '.PAR'
 
     # Parcourir les fichiers dans le dir
     for filename in os.listdir(dir_path):
