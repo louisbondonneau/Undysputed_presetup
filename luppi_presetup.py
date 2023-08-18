@@ -108,17 +108,17 @@ SHELLfile = ' >> /data2/SHELL--at-' + str(DATE) + '-BEAM'
 mjdsnow = 86400
 if not (test):
     # ephem sync with bk1 & bk2
-    command = "cd /ephem && git reset --hard"
+    command = "cd /ephem && git pull"
     completed = subprocess.run(command, shell=True)
     if completed.returncode != 0:
-        sendMail(subject="Erreur lors de l'exécution du git reset --hard sur %s" % (HOSTNAME),
+        sendMail(subject="Erreur lors de l'exécution du git pull sur %s" % (HOSTNAME),
                  text="La commande '%s' a échoué avec le code de retour: %d\n" % (command, completed.returncode))
     # ephem sync on databf
     if(HOSTNAME == 'undysputedbk1'):
-        command = "ssh nfrplsobs@databfnfrdt \"cd /data/nenufar-pulsar/ES03/ephem && git reset --hard\""
+        command = "ssh nfrplsobs@databfnfrdt \"cd /data/nenufar-pulsar/ES03/ephem && git pull\""
         completed = subprocess.run(command, shell=True)
         if completed.returncode != 0:
-            sendMail(subject="Erreur lors de l'exécution du git reset --hard sur databf",
+            sendMail(subject="Erreur lors de l'exécution du git pull sur databf",
                      text="La commande '%s' a échoué avec le code de retour: %d\n" % (command, completed.returncode))
 
 # MJDs NOW
