@@ -109,7 +109,7 @@ mjdsnow = 86400
 if not (test):
     # ephem sync with bk1 & bk2
     try:
-        command = "git pull"
+        command = "sudo git pull"
         completed = subprocess.run(command, cwd="/ephem", shell=True)
         if completed.returncode != 0:
             sendMail(subject="Erreur lors de l'exécution du git pull sur %s" % (HOSTNAME),
