@@ -110,6 +110,7 @@ if not (test):
     # ephem sync with bk1 & bk2
     try:
         # git clone -b main https://forge-osuc.cnrs-orleans.fr/git/pulsar_ephem ephem_test -c http.sslVerify=false
+        print(f"Try to update ephem directory on {HOSTNAME}")
         command = "sudo git pull --rebase"
         completed = subprocess.run(command, cwd="/ephem", shell=True)
         if completed.returncode != 0:
@@ -119,6 +120,7 @@ if not (test):
         print(err)
     # ephem sync on databf
     if(HOSTNAME == 'undysputedbk1'):
+        print(f"Try to update ephem directory on /databf/nenufar-pulsar/ES03/ephem")
         command = "ssh nfrplsobs@databfnfrdt \"cd /data/nenufar-pulsar/ES03/ephem && git pull --rebase\""
         completed = subprocess.run(command, shell=True)
         if completed.returncode != 0:
