@@ -109,7 +109,8 @@ mjdsnow = 86400
 if not (test):
     # ephem sync with bk1 & bk2
     try:
-        command = "sudo git pull"
+        # git clone -b main https://forge-osuc.cnrs-orleans.fr/git/pulsar_ephem ephem_test -c http.sslVerify=false
+        command = "sudo git pull --rebase"
         completed = subprocess.run(command, cwd="/ephem", shell=True)
         if completed.returncode != 0:
             sendMail(subject="Erreur lors de l'exécution du git pull sur %s" % (HOSTNAME),
@@ -118,7 +119,7 @@ if not (test):
         print(err)
     # ephem sync on databf
     if(HOSTNAME == 'undysputedbk1'):
-        command = "ssh nfrplsobs@databfnfrdt \"cd /data/nenufar-pulsar/ES03/ephem && git pull\""
+        command = "ssh nfrplsobs@databfnfrdt \"cd /data/nenufar-pulsar/ES03/ephem && git pull --rebase\""
         completed = subprocess.run(command, shell=True)
         if completed.returncode != 0:
             sendMail(subject="Erreur lors de l'exécution du git pull sur databf",
