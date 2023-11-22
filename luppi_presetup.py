@@ -417,7 +417,7 @@ try:
         else:
             topic_tmp = topic
         dirname_databf2 = observation_start.strftime("%Y%m%d_%H%M%S") + observation_stop.strftime("%Y%m%d_%H%M%S") + '_' + observation_name
-        path_databf2 = '/data/nenufar-pulsar/' + topic_tmp + '/' + observation_start.strftime("%Y/%m") + '/' + dirname_databf2 + '/'
+        path_databf2 = '/data/nenufar-pulsar/' + topic_tmp + '/' + observation_start.strftime("%Y/%m") + '/' + dirname_databf2 + '/L0/'
 
         # -------------------------------TF---MODE------------------------------------------
         if(AllmodeList[BEAM][0] == 'TF'):
@@ -529,8 +529,7 @@ try:
             else:
                 src_name = 'UNKNOWN'
 
-            if (topic_tmp != 'ES03'):
-                AllparametersList[BEAM][0] = AllparametersList[BEAM][0] + ' --databf2path ' + path_databf2
+            AllparametersList[BEAM][0] = AllparametersList[BEAM][0] + ' --databf2path ' + path_databf2
 
             # topic_tmp in /databf2path
             Allcommande[BEAM] = [write_raw_olaf + " -p %d -o /data2/%s --interaddr %s --multiaddr %s --compress --Start %s --End %s %s" %
