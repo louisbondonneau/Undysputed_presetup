@@ -462,11 +462,11 @@ try:
                 stop_function(AllstopTime[BEAM][0])
                 completed = subprocess.run(Allcommande[BEAM][0], shell=True)
                 print('subprocess:', Allcommande[BEAM][0])
-                completed = subprocess.run(luppi_daq_dedisp + AlltransferList[BEAM][0] + ' -g ' +
+                completed = subprocess.run(luppi_daq_dedisp + AlltransferList[BEAM][0] + " --databfdirname " + dirname_databf2 + ' -g ' +
                                            str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &', shell=True)
                 print('returncode:', completed)
             print('subprocess:', Allcommande[BEAM][0])
-            print('subprocess:', luppi_daq_dedisp + AlltransferList[BEAM][0] + ' -g ' + str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &')
+            print('subprocess:', luppi_daq_dedisp + AlltransferList[BEAM][0] + " --databfdirname " + dirname_databf2 + ' -g ' + str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &')
 
         # -------------------------------WAVEFORM---MODE----------------------------------------
         elif(AllmodeList[BEAM][0] == 'WAVE'):
@@ -501,10 +501,10 @@ try:
                 stop_function(AllstopTime[BEAM][0])
                 completed = subprocess.run(Allcommande[BEAM][0], shell=True)
                 print('returncode:', completed)
-                completed = subprocess.run(write_raw + AlltransferList[BEAM][0] + ' -d -g ' +
+                completed = subprocess.run(write_raw + AlltransferList[BEAM][0] + " --databfdirname " + dirname_databf2 + ' -d -g ' +
                                            str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &', shell=True)
             print('subprocess:', Allcommande[BEAM][0])
-            print('subprocess:', write_raw + AlltransferList[BEAM][0] + ' -d -g ' + str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &')
+            print('subprocess:', write_raw + AlltransferList[BEAM][0] + " --databfdirname " + dirname_databf2 + ' -d -g ' + str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &')
 
         # -------------------------------WAVEFORM--OLAF--MODE----------------------------------------
         elif(AllmodeList[BEAM][0] == 'WAVEOLAF'):
@@ -574,11 +574,11 @@ try:
                 stop_function(AllstopTime[BEAM][0])
                 completed = subprocess.run(Allcommande[BEAM][0], shell=True)
                 print('returncode:', completed)
-                completed = subprocess.run(luppi_daq_dedisp + AlltransferList[BEAM][0] + ' -g ' +
+                completed = subprocess.run(luppi_daq_dedisp + AlltransferList[BEAM][0] + " --databfdirname " + dirname_databf2 + ' -g ' +
                                            str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &', shell=True)
             print('subprocess:', Allcommande[BEAM][0])
             print(AlltransferList[BEAM])
-            print('subprocess:', luppi_daq_dedisp + AlltransferList[BEAM][0] + ' -g ' + str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &')
+            print('subprocess:', luppi_daq_dedisp + AlltransferList[BEAM][0] + " --databfdirname " + dirname_databf2 + ' -g ' + str(int(BEAM)) + SHELLfile + str(int(BEAM)) + '.log' + ' &')
         else:
             print('WARNING: mode \'' + AllmodeList[BEAM][0] + '\' in BEAM ' + str(BEAM) + ' is not taken into consideration by undysputed')
 except:
