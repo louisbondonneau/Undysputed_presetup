@@ -236,7 +236,7 @@ try:
                 topic = line.split('=')[1].strip().split(' ')[0]
                 # if(topic[0:2] != 'ES'): topic = default_topic # default topic is default_topic
             if re.search("Observation.name", line):
-                observation_name = line.split('=')[1].strip()
+                observation_name = line.split('=')[1].strip().strip("\"")
             if re.search("Observation.startTime", line):
                 observation_start = line.split('=')[1].strip()
                 observation_start = datetime.strptime(observation_start, "%Y-%m-%dT%H:%M:%SZ")
